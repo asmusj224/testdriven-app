@@ -3,27 +3,21 @@ version: 2
 jobs:
   build:
     docker:
-      - image: docker:17.03-git
-      #   environment:
-      #     FLASK_ENV: development
-      #     APP_SETTINGS: project.config.DevelopmentConfig
-      #     DATABASE_URL: postgres://postgres:postgres@users-db:5432/users_dev
-      #     DATABASE_TEST_URL: postgres://postgres:postgres@users-db:5432/users_test
-      # - image: circleci/postgres:11.2-alpine
-      #   environment:
-      #     POSTGRES_USER: postgres
-      #     POSTGRES_PASSWORD: postgres
-      # - image: nginx:1.15.9-alpine
+      - image: circleci/python:3.7.2
+        environment:
+          FLASK_ENV: development
+          APP_SETTINGS: project.config.DevelopmentConfig
+          DATABASE_URL: postgres://postgres:postgres@users-db:5432/users_dev
+          DATABASE_TEST_URL: postgres://postgres:postgres@users-db:5432/users_test
+      - image: circleci/postgres:11.2-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+      - image: nginx:1.15.9-alpine
     working_directory: ~/repo
     parallelism: 1
     steps:
       - checkout
-      - run:
-          name: Install Docker Compose
-          command: |
-            curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
-            chmod +x ~/docker-compose
-            sudo mv ~/docker-compose /usr/local/bin/docker-compose
       - setup_remote_docker:
           reusable: true
           exclusive: false

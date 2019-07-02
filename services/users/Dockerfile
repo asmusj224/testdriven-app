@@ -8,7 +8,6 @@ RUN apk update && \
     apk add netcat-openbsd
 
 # set working directory
-RUN mkdir /usr/src/app
 WORKDIR /usr/src/app
 
 # add and install requirements
@@ -23,4 +22,5 @@ RUN chmod +x /usr/src/app/entrypoint.sh
 COPY . /usr/src/app
 
 # run server
-CMD ["/usr/src/app/entrypoint.sh"]
+CMD ["python", "manage.py", "run", "-h", "0.0.0.0"]
+# python manage.py run -h 0.0.0.0
