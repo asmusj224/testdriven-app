@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/python:3.7.2-alpine
+      - image: circleci/python:3.7.2
         environment:
           FLASK_ENV: development
           APP_SETTINGS: project.config.DevelopmentConfig
