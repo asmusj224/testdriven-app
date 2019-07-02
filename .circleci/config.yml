@@ -31,6 +31,9 @@ jobs:
           name: Build Docker images
           command: docker-compose -f docker-compose.yml build
       - run:
+          name: Spin up Docker containers
+          command: docker-compose -f docker-compose.yml up -d
+      - run:
           name: Lint the user service
           command: docker-compose exec users flake8 project
       - run:
