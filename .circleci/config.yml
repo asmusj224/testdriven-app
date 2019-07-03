@@ -2,7 +2,7 @@ version: 2
 
 jobs:
   build:
-    machine:
+    docker:
       - image: docker:17.03.2-ce-git
     working_directory: ~/repo
     parallelism: 1
