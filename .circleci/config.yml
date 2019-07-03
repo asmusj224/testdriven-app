@@ -17,6 +17,7 @@ jobs:
     working_directory: ~/repo
     parallelism: 1
     steps:
+      machine: true
       - checkout
       - setup_remote_docker:
           reusable: true
@@ -28,8 +29,11 @@ jobs:
           name: Spin up Docker containers
           command: docker-compose -f docker-compose.yml up -d
       - run:
-          name: Lint the user service
-          command: docker-compose exec repo_users flake8 project
+          name: Docker containers list
+          command: docker container ls --all
       - run:
           name: Lint the user service
-          command: docker-compose exec repo_users python manage.py test
+          command: docker-compose exec users flake8 project
+      - run:
+          name: Lint the user service
+          command: docker-compose exec users python manage.py test
