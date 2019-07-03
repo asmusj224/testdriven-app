@@ -39,12 +39,3 @@ jobs:
       # - run:
       #     name: Test the movies service
       #     command: docker-compose -f docker-compose.yml run movies-service-review npm test
-      - run:
-          name: Deploy
-          command: |
-            npm install
-            node ecs/scripts/setup.js
-            sh ecs/scripts/ecr.sh
-            node ecs/scripts/tasks.js
-            node ecs/scripts/alb.js
-            node ecs/scripts/services.js
