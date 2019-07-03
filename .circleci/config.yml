@@ -16,5 +16,8 @@ jobs:
           name: Spin up Docker containers
           command: docker-compose -f docker-compose.yml up -d
       - run:
+          name: Lint the user service
+          command: docker-compose -f docker-compose.yml run users flake8 project
+      - run:
           name: Test the user service
           command: docker-compose -f docker-compose.yml run users python manage.py test
