@@ -9,7 +9,7 @@ jobs:
     parallelism: 1
     steps:
       - checkout
-      - setup_remote_docker
+      # - setup_remote_docker
       - run:
           name: Install dependencies
           command: |
