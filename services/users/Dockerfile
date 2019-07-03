@@ -18,10 +18,8 @@ RUN pip install -r requirements.txt
 COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 RUN chmod +x /usr/src/app/entrypoint.sh
 
-RUN chmod +x ./entrypoint.sh
-
 # add app
 COPY . /usr/src/app
 
 # run server
-CMD ["./entrypoint.sh"]
+CMD ["/usr/src/app/entrypoint.sh"]
