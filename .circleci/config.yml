@@ -17,7 +17,7 @@ jobs:
     working_directory: ~/repo
     parallelism: 1
     steps:
-      machine: true
+      # machine: true
       - checkout
       - setup_remote_docker:
           reusable: true
