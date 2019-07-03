@@ -29,7 +29,7 @@ jobs:
           command: docker-compose -f docker-compose.yml up -d
       - run:
           name: Lint the user service
-          command: docker-compose exec users flake8 project
+          command: docker-compose exec repo_users flake8 project
       - run:
           name: Lint the user service
-          command: docker-compose exec users python manage.py test
+          command: docker-compose exec repo_users python manage.py test
