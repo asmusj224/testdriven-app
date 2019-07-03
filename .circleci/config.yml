@@ -3,25 +3,30 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/python:3.7.2
-        environment:
-          FLASK_ENV: development
-          APP_SETTINGS: project.config.DevelopmentConfig
-          DATABASE_URL: postgres://postgres:postgres@users-db:5432/users_dev
-          DATABASE_TEST_URL: postgres://postgres:postgres@users-db:5432/users_test
-      - image: circleci/postgres:11.2-alpine
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-      - image: nginx:1.15.9-alpine
+      - image: docker:17.03.2-ce-git
     working_directory: ~/repo
+    # environment:
+    #   - NODE_ENV: test
+    #   - REACT_APP_USERS_SERVICE_URL: http://localhost:3000
+    #   - REACT_APP_MOVIES_SERVICE_URL: http://localhost:3001
     parallelism: 1
     steps:
-      # machine: true
       - checkout
       - setup_remote_docker:
           reusable: true
           exclusive: false
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --no-cache \
+              py-pip=9.0.0-r1 \
+              bash \
+              jq \
+              curl \
+              nodejs
+            pip install \
+              docker-compose==1.12.0 \
+              awscli==1.11.76
       - run:
           name: Build Docker images
           command: docker-compose -f docker-compose.yml build
@@ -29,11 +34,17 @@ jobs:
           name: Spin up Docker containers
           command: docker-compose -f docker-compose.yml up -d
       - run:
-          name: Docker containers list
-          command: docker container ls --all
+          name: Test the user service
+          command: docker-compose -f docker-compose.yml run users python manage.py test
+      # - run:
+      #     name: Test the movies service
+      #     command: docker-compose -f docker-compose.yml run movies-service-review npm test
       - run:
-          name: Lint the user service
-          command: docker-compose exec users flake8 project
-      - run:
-          name: Lint the user service
-          command: docker-compose exec users python manage.py test
+          name: Deploy
+          command: |
+            npm install
+            node ecs/scripts/setup.js
+            sh ecs/scripts/ecr.sh
+            node ecs/scripts/tasks.js
+            node ecs/scripts/alb.js
+            node ecs/scripts/services.js
