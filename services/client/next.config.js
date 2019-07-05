@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { REACT_APP_USERS_SERVICE_URL } = process.env;
 
 module.exports = {
