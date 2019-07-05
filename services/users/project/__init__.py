@@ -3,11 +3,13 @@ import os
 from flask import Flask  # new
 from flask_sqlalchemy import SQLAlchemy
 from flask_debugtoolbar import DebugToolbarExtension
+from flask_cors import CORS
 
 
 # instantiate the extensions
 db = SQLAlchemy()
 toolbar = DebugToolbarExtension()
+cors = CORS()
 
 
 # new
@@ -19,6 +21,7 @@ def create_app():
     # set config
     app_settings = os.getenv('APP_SETTINGS')
     app.config.from_object(app_settings)
+    cors.init_app(app)
 
     # set up extensions
     db.init_app(app)
