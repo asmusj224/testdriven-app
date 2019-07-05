@@ -12,8 +12,6 @@ node_modules
 /dist
 .next
 
-services/client
-
 # misc
 .vscode
 .DS_Store
