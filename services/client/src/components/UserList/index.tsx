@@ -7,6 +7,8 @@ interface Props {
 interface User {
   id: string;
   username: string;
+  active: boolean;
+  email: string;
 }
 
 export default ({ users }: Props) => (
