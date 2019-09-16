@@ -7,8 +7,8 @@ from project import db
 from project.api.models import User
 
 
-def add_user(username, email):
-    user = User(username=username, email=email)
+def add_user(email):
+    user = User(email=email)
     db.session.add(user)
     db.session.commit()
     return user
@@ -27,7 +27,6 @@ class TestUserService(BaseTestCase):
             response = self.client.post(
                 '/users',
                 data=json.dumps({
-                    'username': 'test',
                     'email': 'test@test.com'
                 }),
                 content_type='application/json'
@@ -53,7 +52,7 @@ class TestUserService(BaseTestCase):
         with self.client:
             response = self.client.post(
                 '/users',
-                data=json.dumps({'email': 'test@test.com'}),
+                data=json.dumps({'test': 'test@test.com'}),
                 content_type='application/json'
             )
             data = json.loads(response.data.decode())
@@ -66,7 +65,6 @@ class TestUserService(BaseTestCase):
             self.client.post(
                 '/users',
                 data=json.dumps({
-                    'username': 'test',
                     'email': 'test@test.com'
                 }),
                 content_type='application/json'
@@ -75,7 +73,6 @@ class TestUserService(BaseTestCase):
             response = self.client.post(
                 '/users',
                 data=json.dumps({
-                    'username': 'test',
                     'email': 'test@test.com'
                 }),
                 content_type='application/json'
@@ -86,12 +83,11 @@ class TestUserService(BaseTestCase):
             self.assertIn('fail', data['status'])
 
     def test_single_user(self):
-        user = add_user('test', 'test@test.org')
+        user = add_user('test@test.org')
         with self.client:
             response = self.client.get(f'/users/{user.id}')
             data = json.loads(response.data.decode())
             self.assertEqual(response.status_code, 200)
-            self.assertIn('test', data['data']['username'])
             self.assertIn('test@test.org', data['data']['email'])
             self.assertIn('success', data['status'])
 
@@ -104,17 +100,15 @@ class TestUserService(BaseTestCase):
             self.assertIn('fail', data['status'])
 
     def test_all_users(self):
-        add_user('test', 'test@test.com')
-        add_user('test1', 'test1@test.com')
+        add_user('test@test.com')
+        add_user('test1@test.com')
 
         with self.client:
             response = self.client.get('/users')
             data = json.loads(response.data.decode())
             self.assertEqual(response.status_code, 200)
             self.assertEqual(len(data['data']['users']), 2)
-            self.assertIn('test', data['data']['users'][0]['username'])
             self.assertIn('test@test.com', data['data']['users'][0]['email'])
-            self.assertIn('test1', data['data']['users'][1]['username'])
             self.assertIn('test1@test.com', data['data']['users'][1]['email'])
             self.assertIn('success', data['status'])
 
