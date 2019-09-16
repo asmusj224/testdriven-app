@@ -27,12 +27,11 @@ class UserList(Resource):
         }
         if not post_data:
             return response, 400
-        username = post_data.get('username')
         email = post_data.get('email')
         try:
             user = User.query.filter_by(email=email).first()
             if not user:
-                db.session.add(User(username=username, email=email))
+                db.session.add(User(email=email))
                 db.session.commit()
                 response['status'] = 'success'
                 response['message'] = f'{email} was added!'
@@ -69,7 +68,6 @@ class Users(Resource):
                     'status': 'success',
                     'data': {
                         'id': user.id,
-                        'username': user.username,
                         'email': user.email,
                         'active': user.active
                     }
