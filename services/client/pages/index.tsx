@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { NextPage } from 'next';
-import UserLists from '../src/containers/UserList';
+import CreateUser from '../src/components/CreateUser';
 
-const IndexPage: NextPage = () => <UserLists />;
+const IndexPage: NextPage = () => (
+  <div>
+    <CreateUser />
+  </div>
+);
 
 export default IndexPage;
