@@ -6,7 +6,6 @@ interface Props {
 
 interface User {
   id: string;
-  username: string;
   active: boolean;
   email: string;
 }
@@ -14,7 +13,7 @@ interface User {
 export default ({ users }: Props) => (
   <div>
     {users.map((user: User) => {
-      return <h4 key={user.id}>{user.username}</h4>;
+      return <h4 key={user.id}>{user.email}</h4>;
     })}
   </div>
 );
