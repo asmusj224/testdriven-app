@@ -27,6 +27,19 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
+  graphql:
+    build:
+      context: ./services/graphql
+      dockerfile: Dockerfile
+    volumes:
+      - './services/graphql:/usr/src/app'
+    ports:
+      - 5002:5002
+    environment:
+      - PORT=5002
+    depends_on:
+      - users
+
   nginx:
     build:
       context: ./services/nginx
@@ -36,3 +49,4 @@ services:
       - 80:80
     depends_on:
       - users
+      - graphql

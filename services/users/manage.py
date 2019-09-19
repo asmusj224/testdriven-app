@@ -20,8 +20,8 @@ COV = coverage.coverage(
 )
 COV.start()
 
-app = create_app()  # new
-cli = FlaskGroup(create_app=create_app)  # new
+app = create_app()
+cli = FlaskGroup(create_app=create_app)
 
 
 @cli.command('recreate_db')
